@@ -112,11 +112,45 @@ void cargarCancion()
         strcpy(a.comentario, "popularizada en Rocky 3");
         fwrite(&a, sizeof(Cancion), 1,cancionero);
    
+        a.idCancion = 10;
+        strcpy(a.titulo, "The final countdown");
+        strcpy(a.artista, "Europe");
+        a.duracion = 5.03;
+        strcpy(a.album, "Single");
+        a.anio = 1986;
+        strcpy(a.genero, "Rock Clasico");
+        strcpy(a.comentario, "primer hit de la banda");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+   
+        a.idCancion = 11;
+        strcpy(a.titulo, "Africa");
+        strcpy(a.artista, "Toto");
+        a.duracion = 5.03;
+        strcpy(a.album, "Toto 4");
+        a.anio = 1982;
+        strcpy(a.genero, "AfroRock");
+        strcpy(a.comentario, "Inspirada en ritmos africanos");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
 
+        a.idCancion = 12;
+        strcpy(a.titulo, "Sweet child o mine");
+        strcpy(a.artista, "Guns n Roses");
+        a.duracion = 5.13;
+        strcpy(a.album, "Apettite for destruction");
+        a.anio = 1987;
+        strcpy(a.genero, "Hard Rock");
+        strcpy(a.comentario, "primer hit de la banda");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
 
-
-
-
+        a.idCancion = 13;
+        strcpy(a.titulo, "Every breath you take");
+        strcpy(a.artista, "The police");
+        a.duracion = 3.48;
+        strcpy(a.album, "Synchronicity");
+        a.anio = 1983;
+        strcpy(a.genero, "Rock Clasico Balada");
+        strcpy(a.comentario, "ocho meses numero 1");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
 
 
 
