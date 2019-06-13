@@ -62,6 +62,65 @@ void cargarCancion()
         strcpy(a.comentario, "certificado platino");
         fwrite(&a, sizeof(Cancion), 1,cancionero);
 
+        a.idCancion = 5;
+        strcpy(a.titulo, "Another one bites the dust");
+        strcpy(a.artista, "Queen");
+        a.duracion = 4.00;
+        strcpy(a.album, "the game");
+        a.anio = 1980;
+        strcpy(a.genero, "Rock Clasico");
+        strcpy(a.comentario, "escrita por John Deacon");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+        
+        a.idCancion = 6;
+        strcpy(a.titulo, "Call me");
+        strcpy(a.artista, "Blondie");
+        a.duracion = 3.33;
+        strcpy(a.album, "American gigolo");
+        a.anio = 1980;
+        strcpy(a.genero, "Rock Clasico");
+        strcpy(a.comentario, "banda sonora de American Gigolo");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 7;
+        strcpy(a.titulo, "Like a virigin");
+        strcpy(a.artista, "Madonna");
+        a.duracion = 3.12;
+        strcpy(a.album, "Like a virgin");
+        a.anio = 1984;
+        strcpy(a.genero, "Pop");
+        strcpy(a.comentario, "Segundo hit de la reina");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+        
+        a.idCancion = 8;
+        strcpy(a.titulo, "Dont stop belivin");
+        strcpy(a.artista, "Journey");
+        a.duracion = 4.16;
+        strcpy(a.album, "Escape");
+        a.anio = 1981;
+        strcpy(a.genero, "Glam Rock ");
+        strcpy(a.comentario, "one hit wonder");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 9;
+        strcpy(a.titulo, "Eye of the tiger");
+        strcpy(a.artista, "Survivor");
+        a.duracion = 4.16;
+        strcpy(a.album, "Eye of the tiger");
+        a.anio = 1982;
+        strcpy(a.genero, "Rock Clasico");
+        strcpy(a.comentario, "popularizada en Rocky 3");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+   
+
+
+
+
+
+
+
+
+
         fclose (cancionero);
 
     }
