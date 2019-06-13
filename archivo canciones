@@ -1,0 +1,68 @@
+///codigo duro del archivo de canciones.hay que ir sumando por lomenos tenes 50. 
+El criterio que eleji es que sea de los 80s pero puede ser cualquier otro
+
+//struct
+typedef struct
+{
+    int idCancion;
+    char titulo[30];
+    char artista[20];
+    float duracion;
+    char album[20];
+    int anio;
+    char genero[20];
+    char comentario[100];
+    // int eliminado;  // indica 1 o 0 si la canción fue eliminada
+} Cancion;
+
+void cargarCancion()
+{
+    Cancion a;
+    FILE *cancionero = fopen (nombreArchivo, "wb");
+
+    if (cancionero != NULL)
+    {
+        a.idCancion = 1;
+        strcpy(a.titulo, "Take on me");
+        strcpy(a.artista, "A-ha");
+        a.duracion = 3.54;
+        strcpy(a.album, "Hunting high");
+        a.anio = 1984;
+        strcpy(a.genero, "synth pop");
+        strcpy(a.comentario, "Compuesta en la tonalidad de la mayor​");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 2;
+        strcpy(a.titulo, "I Wanna Dance with Somebody");
+        strcpy(a.artista, "Whitney_Houston");
+        a.duracion = 5.48;
+        strcpy(a.album, "Whitney");
+        a.anio = 1987;
+        strcpy(a.genero, "R&B contemporaneo");
+        strcpy(a.comentario, "Compuesto por George Merrill");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 3;
+        strcpy(a.titulo, "Livin on a Prayer");
+        strcpy(a.artista, "Bon_Jovi");
+        a.duracion = 4.10;
+        strcpy(a.album, "Slippery when wet");
+        a.anio = 1986;
+        strcpy(a.genero, "Glam rock");
+        strcpy(a.comentario, "una de las 200 canciones con mayores descargas digitales");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 4;
+        strcpy(a.titulo, "When Doves Cry");
+        strcpy(a.artista, "Prince");
+        a.duracion = 3.47;
+        strcpy(a.album, "Purple Rain");
+        a.anio = 1984;
+        strcpy(a.genero, "Pop rock");
+        strcpy(a.comentario, "certificado platino");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        fclose (cancionero);
+
+    }
+}
