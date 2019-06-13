@@ -1,0 +1,134 @@
+int main()
+{
+    cargarCancion();
+
+
+    //int anioBuscar = scanAnio();
+    //muestraCancionAnio(anioBuscar);
+
+    //mostrarTodasCanciones();
+
+
+    int cantidad = 200;
+    Cancion arreglo[cantidad];
+    int validos = fileToArray(arreglo, cantidad);
+
+    muestraArregloStruct(arreglo,validos);
+
+
+    return 0;
+}
+
+void muestraArregloStruct (Cancion a[], int cant)
+{
+    int i = 0;
+    while(i<cant)
+    {
+        puts("\n---------------------------------------");
+    printf("\n           Id: %d", a[i].idCancion);
+    printf("\n      Cancion: %s", a[i].titulo);
+    printf("\n      Artista: %s", a[i].artista);
+    printf("\n     Duracion: %.2f", a[i].duracion);
+    printf("\n        Album: %s", a[i].album);
+    printf("\n         Anio: %d", a[i].anio);
+    printf("\n       Genero: %s", a[i].genero);
+    printf("\n   Comentario: %s", a[i].comentario);
+    puts("\n---------------------------------------");
+
+        i++;
+    }
+}
+
+int fileToArray(Cancion b[], int cantidad)
+{
+    FILE* archi;
+    Cancion a;
+    int i =0;
+
+    archi=fopen(nombreArchivo,"rb");
+
+    if (archi!=NULL)
+    {
+
+        while (fread(&a,sizeof(Cancion),1,archi)>0)
+           {
+            b[i] = a;
+            i++;
+        }
+    }
+ return i;
+}
+void mostrarTodasCanciones()
+{
+    FILE *archi;
+    Cancion a;
+    archi=fopen(nombreArchivo, "rb");
+    int i=0;
+
+    if (archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(Cancion),1,archi);
+            if(!feof(archi))
+            {
+                printf("\nRegistro numero %d",i++);
+                mostrarCancion(a);
+            }
+        }
+        fclose(archi);
+    }
+}
+
+int scanAnio()
+{
+    int a;
+    printf("Busque cancion por anio:  ");
+    fflush(stdin);
+    scanf("%d", &a);
+
+    return a;
+}
+
+void muestraCancionAnio(int anio)
+{
+    FILE * archi;
+    archi=fopen(nombreArchivo, "rb");
+    Cancion a;
+
+    int rta=0;
+
+    if(archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(Cancion),1,archi);
+            if(!feof(archi))
+            {
+                if((a.anio==anio))
+                {
+                    mostrarCancion(a);
+                }
+            }
+        }
+        printf("\nNo tenemos canciones de ese anio");
+        fclose(archi);
+    }
+}
+
+void mostrarCancion(Cancion a)
+{
+
+    puts("\n---------------------------------------");
+    printf("\n           Id: %d", a.idCancion);
+    printf("\n      Cancion: %s", a.titulo);
+    printf("\n      Artista: %s", a.artista);
+    printf("\n     Duracion: %.2f", a.duracion);
+    printf("\n        Album: %s", a.album);
+    printf("\n         Anio: %d", a.anio);
+    printf("\n       Genero: %s", a.genero);
+    printf("\n   Comentario: %s", a.comentario);
+    puts("\n---------------------------------------");
+
+
+}
