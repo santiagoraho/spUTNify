@@ -1,161 +1,135 @@
-///codigo duro del archivo de canciones.hay que ir sumando por lomenos tenes 50. 
-El criterio que eleji es que sea de los 80s pero puede ser cualquier otro
-
-//struct
-typedef struct
+int main()
 {
-    int idCancion;
-    char titulo[30];
-    char artista[20];
-    float duracion;
-    char album[20];
-    int anio;
-    char genero[20];
-    char comentario[100];
-    // int eliminado;  // indica 1 o 0 si la canción fue eliminada
-} Cancion;
+    cargarCancion();
 
-void cargarCancion()
+
+    //int anioBuscar = scanAnio();
+    //muestraCancionAnio(anioBuscar);
+
+    //mostrarTodasCanciones();
+
+
+    int cantidad = 200;
+    Cancion arreglo[cantidad];
+    int validos = fileToArray(arreglo, cantidad);
+
+    muestraArregloStruct(arreglo,validos);
+
+
+    return 0;
+}
+
+void muestraArregloStruct (Cancion a[], int cant)
 {
-    Cancion a;
-    FILE *cancionero = fopen (nombreArchivo, "wb");
-
-    if (cancionero != NULL)
+    int i = 0;
+    while(i<cant)
     {
-        a.idCancion = 1;
-        strcpy(a.titulo, "Take on me");
-        strcpy(a.artista, "A-ha");
-        a.duracion = 3.54;
-        strcpy(a.album, "Hunting high");
-        a.anio = 1984;
-        strcpy(a.genero, "synth pop");
-        strcpy(a.comentario, "Compuesta en la tonalidad de la mayor​");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
+        puts("\n---------------------------------------");
+    printf("\n           Id: %d", a[i].idCancion);
+    printf("\n      Cancion: %s", a[i].titulo);
+    printf("\n      Artista: %s", a[i].artista);
+    printf("\n     Duracion: %.2f", a[i].duracion);
+    printf("\n        Album: %s", a[i].album);
+    printf("\n         Anio: %d", a[i].anio);
+    printf("\n       Genero: %s", a[i].genero);
+    printf("\n   Comentario: %s", a[i].comentario);
+    puts("\n---------------------------------------");
 
-        a.idCancion = 2;
-        strcpy(a.titulo, "I Wanna Dance with Somebody");
-        strcpy(a.artista, "Whitney_Houston");
-        a.duracion = 5.48;
-        strcpy(a.album, "Whitney");
-        a.anio = 1987;
-        strcpy(a.genero, "R&B contemporaneo");
-        strcpy(a.comentario, "Compuesto por George Merrill");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 3;
-        strcpy(a.titulo, "Livin on a Prayer");
-        strcpy(a.artista, "Bon_Jovi");
-        a.duracion = 4.10;
-        strcpy(a.album, "Slippery when wet");
-        a.anio = 1986;
-        strcpy(a.genero, "Glam rock");
-        strcpy(a.comentario, "una de las 200 canciones con mayores descargas digitales");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 4;
-        strcpy(a.titulo, "When Doves Cry");
-        strcpy(a.artista, "Prince");
-        a.duracion = 3.47;
-        strcpy(a.album, "Purple Rain");
-        a.anio = 1984;
-        strcpy(a.genero, "Pop rock");
-        strcpy(a.comentario, "certificado platino");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 5;
-        strcpy(a.titulo, "Another one bites the dust");
-        strcpy(a.artista, "Queen");
-        a.duracion = 4.00;
-        strcpy(a.album, "the game");
-        a.anio = 1980;
-        strcpy(a.genero, "Rock Clasico");
-        strcpy(a.comentario, "escrita por John Deacon");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-        
-        a.idCancion = 6;
-        strcpy(a.titulo, "Call me");
-        strcpy(a.artista, "Blondie");
-        a.duracion = 3.33;
-        strcpy(a.album, "American gigolo");
-        a.anio = 1980;
-        strcpy(a.genero, "Rock Clasico");
-        strcpy(a.comentario, "banda sonora de American Gigolo");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 7;
-        strcpy(a.titulo, "Like a virigin");
-        strcpy(a.artista, "Madonna");
-        a.duracion = 3.12;
-        strcpy(a.album, "Like a virgin");
-        a.anio = 1984;
-        strcpy(a.genero, "Pop");
-        strcpy(a.comentario, "Segundo hit de la reina");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-        
-        a.idCancion = 8;
-        strcpy(a.titulo, "Dont stop belivin");
-        strcpy(a.artista, "Journey");
-        a.duracion = 4.16;
-        strcpy(a.album, "Escape");
-        a.anio = 1981;
-        strcpy(a.genero, "Glam Rock ");
-        strcpy(a.comentario, "one hit wonder");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 9;
-        strcpy(a.titulo, "Eye of the tiger");
-        strcpy(a.artista, "Survivor");
-        a.duracion = 4.16;
-        strcpy(a.album, "Eye of the tiger");
-        a.anio = 1982;
-        strcpy(a.genero, "Rock Clasico");
-        strcpy(a.comentario, "popularizada en Rocky 3");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-   
-        a.idCancion = 10;
-        strcpy(a.titulo, "The final countdown");
-        strcpy(a.artista, "Europe");
-        a.duracion = 5.03;
-        strcpy(a.album, "Single");
-        a.anio = 1986;
-        strcpy(a.genero, "Rock Clasico");
-        strcpy(a.comentario, "primer hit de la banda");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-   
-        a.idCancion = 11;
-        strcpy(a.titulo, "Africa");
-        strcpy(a.artista, "Toto");
-        a.duracion = 5.03;
-        strcpy(a.album, "Toto 4");
-        a.anio = 1982;
-        strcpy(a.genero, "AfroRock");
-        strcpy(a.comentario, "Inspirada en ritmos africanos");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 12;
-        strcpy(a.titulo, "Sweet child o mine");
-        strcpy(a.artista, "Guns n Roses");
-        a.duracion = 5.13;
-        strcpy(a.album, "Apettite for destruction");
-        a.anio = 1987;
-        strcpy(a.genero, "Hard Rock");
-        strcpy(a.comentario, "primer hit de la banda");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-        a.idCancion = 13;
-        strcpy(a.titulo, "Every breath you take");
-        strcpy(a.artista, "The police");
-        a.duracion = 3.48;
-        strcpy(a.album, "Synchronicity");
-        a.anio = 1983;
-        strcpy(a.genero, "Rock Clasico Balada");
-        strcpy(a.comentario, "ocho meses numero 1");
-        fwrite(&a, sizeof(Cancion), 1,cancionero);
-
-
-
-
-        fclose (cancionero);
-
+        i++;
     }
 }
+
+int fileToArray(Cancion b[], int cantidad)
+{
+    FILE* archi;
+    Cancion a;
+    int i =0;
+
+    archi=fopen(nombreArchivo,"rb");
+
+    if (archi!=NULL)
+    {
+
+        while (fread(&a,sizeof(Cancion),1,archi)>0)
+           {
+            b[i] = a;
+            i++;
+        }
+    }
+ return i;
+}
+void mostrarTodasCanciones()
+{
+    FILE *archi;
+    Cancion a;
+    archi=fopen(nombreArchivo, "rb");
+    int i=0;
+
+    if (archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(Cancion),1,archi);
+            if(!feof(archi))
+            {
+                printf("\nRegistro numero %d",i++);
+                mostrarCancion(a);
+            }
+        }
+        fclose(archi);
+    }
+}
+
+int scanAnio()
+{
+    int a;
+    printf("Busque cancion por anio:  ");
+    fflush(stdin);
+    scanf("%d", &a);
+
+    return a;
+}
+
+void muestraCancionAnio(int anio)
+{
+    FILE * archi;
+    archi=fopen(nombreArchivo, "rb");
+    Cancion a;
+
+    int rta=0;
+
+    if(archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(Cancion),1,archi);
+            if(!feof(archi))
+            {
+                if((a.anio==anio))
+                {
+                    mostrarCancion(a);
+                }
+            }
+        }
+        printf("\nNo tenemos canciones de ese anio");
+        fclose(archi);
+    }
+}
+
+void mostrarCancion(Cancion a)
+{
+
+    puts("\n---------------------------------------");
+    printf("\n           Id: %d", a.idCancion);
+    printf("\n      Cancion: %s", a.titulo);
+    printf("\n      Artista: %s", a.artista);
+    printf("\n     Duracion: %.2f", a.duracion);
+    printf("\n        Album: %s", a.album);
+    printf("\n         Anio: %d", a.anio);
+    printf("\n       Genero: %s", a.genero);
+    printf("\n   Comentario: %s", a.comentario);
+    puts("\n---------------------------------------");
+
+
+}
+
