@@ -1,0 +1,563 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char archivoUsuario[]= {"usuario.dat"};
+char archivoCancion[]= {"canciones.dat"};
+
+typedef struct
+{
+    int idCancion;
+    char titulo[30];
+    char artista[20];
+    float duracion;
+    char album[20];
+    int anio;
+    char genero[20];
+    char comentario[100];
+    int eliminado;  // indica 1 o 0 si la canción fue eliminada
+} Cancion;
+
+typedef struct
+{
+    int idUsuario;
+    char nombreUsuario[30];
+    char pass[20];
+    int anioNacimiento;
+    char pais[20];
+    int playlist[50]; //Guarda los id de las canciones.
+    int cantidad; // Es el válidos de la playlist.
+    int eliminado;   // indica 1 o 0 si el cliente fue eliminado
+} usuario;
+void cargarCancion()
+{
+    Cancion a;
+    FILE *cancionero = fopen (archivoCancion, "wb");
+
+    if (cancionero != NULL)
+    {
+        a.idCancion = 1;
+        strcpy(a.titulo, "Take on me");
+        strcpy(a.artista, "A-ha");
+        a.duracion = 3.54;
+        strcpy(a.album, "Hunting high");
+        a.anio = 1984;
+        strcpy(a.genero, "synth pop");
+        strcpy(a.comentario, "Compuesta en la tonalidad de la mayor​");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 2;
+        strcpy(a.titulo, "I Wanna Dance with Somebody");
+        strcpy(a.artista, "Whitney_Houston");
+        a.duracion = 5.48;
+        strcpy(a.album, "Whitney");
+        a.anio = 1987;
+        strcpy(a.genero, "R&B contemporaneo");
+        strcpy(a.comentario, "Compuesto por George Merrill");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 3;
+        strcpy(a.titulo, "Livin on a Prayer");
+        strcpy(a.artista, "Bon_Jovi");
+        a.duracion = 4.10;
+        strcpy(a.album, "Slippery when wet");
+        a.anio = 1986;
+        strcpy(a.genero, "Pop rock");
+        strcpy(a.comentario, "una de las 200 canciones con mayores descargas digitales");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        a.idCancion = 4;
+        strcpy(a.titulo, "When Doves Cry");
+        strcpy(a.artista, "Prince");
+        a.duracion = 3.47;
+        strcpy(a.album, "Purple Rain");
+        a.anio = 1984;
+        strcpy(a.genero, "Pop rock");
+        strcpy(a.comentario, "certificado platino");
+        fwrite(&a, sizeof(Cancion), 1,cancionero);
+
+        fclose (cancionero);
+
+    }
+}
+int fileToArray(Cancion b[], int cantidad)
+{
+    FILE* archi;
+    Cancion a;
+    int i =0;
+
+    archi=fopen(archivoCancion,"rb");
+
+    if (archi!=NULL)
+    {
+
+        while (fread(&a,sizeof(Cancion),1,archi)>0)
+           {
+            b[i] = a;
+            i++;
+        }
+       fclose(archi);
+    }
+ return i;
+}
+void cargaUsuario()
+{
+    FILE*archi=fopen(archivoUsuario,"a+b");
+    usuario a;
+    fseek(archi,0,SEEK_END);
+    int id= ftell(archi)/sizeof(usuario);
+    int bandera;
+    char nombre[30];
+    if (archi!=NULL)
+    {
+        printf ("Ingrese nombre usuario: \n");
+        fflush (stdin);
+        scanf ("%s",&a.nombreUsuario);
+
+
+        printf ("Ingrese contraseña: \n");
+        fflush (stdin);
+        scanf ("%s",&a.pass);
+
+        printf ("Ingrese año nacimiento: \n");
+        fflush (stdin);
+        scanf ("%d",&a.anioNacimiento);
+
+        printf ("Ingrese pais de nacimiento: \n");
+        fflush (stdin);
+        scanf ("%s",&a.pais);
+
+        a.idUsuario=id;
+        a.eliminado=0; //cero significa que usuario existe.
+
+        fwrite (&a,sizeof(usuario),1,archi);
+        fclose (archi);
+    }
+
+
+
+}
+void mostrarUsuario(usuario a)
+{
+
+    puts("\n---------------------------------------");
+    printf("\n                  Id: %d", a.idUsuario);
+    printf("\n              Nombre: %s", a.nombreUsuario);
+    printf("\n            Password: %s", a.pass);
+    printf("\n      Año Nacimiento: %d", a.anioNacimiento);
+    printf("\n                Pais: %s", a.pais);
+    printf("\n            Playlist: %d", a.playlist);
+    printf("\n            Cantidad: %d", a.cantidad);
+    printf("\n     Esta eliminado?: %d", a.eliminado);
+    puts("\n---------------------------------------");
+
+
+}
+void mostrarTodosUsuarios()
+{
+    FILE *archi;
+    usuario a;
+    archi=fopen(archivoUsuario, "rb");
+    int i=0;
+
+    if (archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(usuario),1,archi);
+            if(!feof(archi))
+            {
+                printf("\nRegistro numero %d",i++);
+                mostrarUsuario(a);
+            }
+        }
+        fclose(archi);
+    }
+}
+int posMenorStruct (Cancion a[], int pos, int cant)
+{
+    int i = pos+1;
+    int posMenor=pos;
+    char menorTitulo[30];
+    strcpy(menorTitulo,a[pos].titulo);
+
+    while(i<cant)
+    {
+        if(strcmpi(menorTitulo,a[i].titulo)>0)
+        {
+            strcpy(menorTitulo,a[i].titulo);
+            posMenor=i;
+        }
+        i++;
+    }
+    return posMenor;
+}
+
+void ordenaArregloStructSeleccion(Cancion z[], int cant)
+{
+    int i=0;
+    int menor;
+    Cancion aux;
+
+    while(i<cant)
+    {
+        menor = posMenorStruct(z, i, cant);
+        aux=z[menor];
+        z[menor]=z[i];
+        z[i]=aux;
+        i++;
+    }
+    muestraArregloStruct (z,cant);
+}
+
+void ordenarGeneroInser(Cancion z[],int cant)
+{
+    int i=0;
+    while(i<cant-1)
+    {
+        insertarGenero(z,i,z[i+1]);
+        i++;
+    }
+    muestraArregloStruct(z,cant);
+}
+
+void insertarGenero(Cancion z[],int ultpos,Cancion aux)
+{
+    int i=ultpos;
+    while(i>=0&&strcmpi(z[i].genero,aux.genero)>0)
+    {
+        z[i+1]=z[i];
+        i--;
+    }
+    z[i+1]=aux;
+}
+
+void muestraArregloStruct (Cancion a[], int cant)
+{
+    int i = 0;
+    while(i<cant)
+    {
+        puts("\n---------------------------------------");
+    printf("\n           Id: %d", a[i].idCancion);
+    printf("\n      Cancion: %s", a[i].titulo);
+    printf("\n      Artista: %s", a[i].artista);
+    printf("\n     Duracion: %.2f", a[i].duracion);
+    printf("\n        Album: %s", a[i].album);
+    printf("\n         Anio: %d", a[i].anio);
+    printf("\n       Genero: %s", a[i].genero);
+    printf("\n   Comentario: %s", a[i].comentario);
+    puts("\n---------------------------------------");
+
+        i++;
+    }
+}
+void mostrarUnUsuario(int id)
+{
+    FILE *archi;
+    usuario a;
+    archi=fopen(archivoUsuario, "rb");
+    int ide= id;
+    int i=0;
+
+    if (archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(usuario),1,archi);
+            if(!feof(archi))
+            {
+                if(a.idUsuario == ide)
+                {
+                    mostrarUsuario(a);
+                }
+
+            }
+        }
+        fclose(archi);
+    }
+}
+int ingresarComoUsuario()
+{
+    int flag;
+    int ok;
+    char nombre[20];
+    char contra[20];
+    do
+    {
+        printf("Ingrese su nombre de usuario:  \n");
+        fflush(stdin);
+        scanf("%s", &nombre);
+
+        printf("Ingrese su contraseña:  \n");
+        fflush(stdin);
+        scanf("%s", &contra);
+
+        flag =  confirmarExistencia(nombre,contra);
+        if (flag<0)
+        {
+            printf ("Nombre usuario inexistente\n");
+
+        }
+    }
+    while(flag <0);
+    return flag;
+
+    // si flag es igual a cero es un usuario existente, si es uno no existe.
+
+}
+
+int confirmarExistencia(char nombre[], char contra[])
+{
+    FILE *archi = fopen(archivoUsuario,"rb");
+    usuario a;
+    int rta;
+    if (archi!=NULL)
+    {
+        while (!feof(archi))
+        {
+            fread(&a, sizeof(usuario),1,archi);
+            if(!feof(archi))
+            {
+                if(strcmp(a.nombreUsuario,nombre) == 0 )
+                {
+                    rta = a.idUsuario;
+
+                }
+                else
+                {
+                    rta=-1;
+                }
+            }
+
+        }
+        fclose(archi);
+    }
+    printf ("rta es %d",rta);
+    return rta;
+
+}
+void swiNomGen(Cancion z[],int val,int id)
+{
+    int opcion =0;
+    do{
+        system ("cls");
+        printf ("1. Ver lista canciones ordenadas por titulo\n\n");
+        printf ("2. Ver lista canciones por genero\n\n");
+        printf ("3. Salir\n\n");
+        scanf ("%d",&opcion);
+
+        switch (opcion)
+        {
+         case 1:
+            system ("cls");
+            ordenaArregloStructSeleccion(z,val);
+            armarPlaylist(id);
+            getch();
+            break;
+
+         case 2:
+            system ("cls");
+            ordenarGeneroInser(z,val);
+            armarPlaylist(id);
+
+            getch();
+            break;
+
+         case 3:
+            break;
+
+         default:
+            system ("cls");
+            printf ("Opcion no valida");
+            break;
+        }
+
+
+     }while(opcion!=3);
+
+    return 0;
+}
+void agregarCancionPlaylist(int id)
+{
+    FILE*archi = fopen(archivoUsuario,"ab");
+    usuario a;
+    char control='s';
+    int i = 0;
+
+    if(archi!=NULL)
+    {
+        fseek(archi,sizeof(usuario)*id,SEEK_SET);
+        puts("Ingrese ID de la cancion que desea agregar a su playlist");
+
+        while(control =='s')
+        {
+            printf("\n ID: ");
+            fflush(stdin);
+            scanf("%d",&a[i.playlist);
+
+            a.cantidad = i;
+
+            fwrite(&a,sizeof(usuario),1,archi);
+
+            i++;
+
+            printf("\ndesea agregar otra?...s/n");
+            fflush(stdin);
+            scanf("%c",&control)
+        }
+
+}
+void armarPlaylist(int id)
+{
+   int opcion =0;
+    do
+    {
+
+        printf ("MENU DE OPCIONES\n\n");
+        printf ("1. Agregar cancion a playlist\n\n");
+        printf ("2. Escuchar cancion\n\n");
+        printf ("3. Salir\n\n");
+        scanf ("%d",&opcion);
+
+        switch (opcion)
+        {
+        case 1:
+            agregarCancionPlaylist(id);
+            getch();
+
+
+            break;
+
+        case 2:
+
+
+            getch();
+            break;
+
+        case 3:
+
+            break;
+
+        default:
+            printf ("Opcion no valida");
+            break;
+        }
+
+    }
+    while(opcion!=3);
+}
+}
+
+void loginExitoso(int id,Cancion z[],int val)
+{
+    int opcion =0;int h=id;
+    do
+    {
+        system ("cls");
+        printf ("MENU DE OPCIONES\n\n");
+        printf ("1. Ver perfil usuario\n\n");
+        printf ("2. Mostrar playlist\n\n");
+        printf ("3. Escuchar cancion\n\n");
+        printf ("4. Crear Playlist\n\n");
+        printf ("5. Canciones recomendadas\n\n");
+        printf ("6. Salir\n\n");
+        scanf ("%d",&opcion);
+
+        switch (opcion)
+        {
+        case 1:
+            system ("cls");
+            mostrarUnUsuario(h);
+            getch();
+
+
+            break;
+
+        case 2:
+            system ("cls");
+            swiNomGen(z,val,id);
+
+            getch();
+            break;
+
+        case 3:
+            system ("cls");
+            printf("opc3");
+            getch();
+            break;
+
+        case 4:
+            system ("cls");
+            printf("opc4");
+            getch();
+            break;
+
+            case 5:
+            system ("cls");
+            printf("opc4");
+            getch();
+            break;
+
+
+        case 6:
+            break;
+
+        default:
+            system ("cls");
+            printf ("Opcion no valida");
+            break;
+        }
+
+    }
+    while(opcion!=6);
+}
+
+
+int main()
+{
+    int opcion =0;
+   // cargarCancion();
+    int dimension = 200;
+    Cancion z [dimension];
+    int validos = fileToArray(z, dimension);
+
+    do
+    {
+        system ("cls");
+        printf ("Bienvenido a spUTNify \n\n");
+        printf ("1. Registrarse\n\n");
+        printf ("2. Ingresar\n\n");
+        printf ("3. Salir\n\n");
+        scanf("%d",&opcion);
+
+        switch(opcion)
+        {
+        case 1:
+            system ("cls");
+            cargaUsuario();
+            break;
+
+        case 2 :
+            system ("cls");
+            int identidadUsuario=ingresarComoUsuario();
+            loginExitoso(identidadUsuario,z,validos);
+            break;
+
+        case 3 :
+            break;
+
+        default:
+            system ("cls");
+            printf ("\nOpcion no valida\n");
+            break;
+        }
+
+    }
+    while(opcion!=3);
+
+
+    //cargaUsuario();
+    mostrarTodosUsuarios();
+
+    return 0;
+}
