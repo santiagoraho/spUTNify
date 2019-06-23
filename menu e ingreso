@@ -1,0 +1,278 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char archivoUsuario[]= {"usuario.dat"};
+
+typedef struct
+{
+    int idUsuario;
+    char nombreUsuario[30];
+    char pass[20];
+    int anioNacimiento;
+    char pais[20];
+    int playlist[50]; //Guarda los id de las canciones.
+    int cantidad; // Es el válidos de la playlist.
+    int eliminado;   // indica 1 o 0 si el cliente fue eliminado
+} usuario;
+
+
+void cargaUsuario()
+{
+    FILE*archi=fopen(archivoUsuario,"a+b");
+    usuario a;
+    fseek(archi,0,SEEK_END);
+    int id= ftell(archi)/sizeof(usuario);
+    int bandera;
+    char nombre[30];
+    if (archi!=NULL)
+    {
+        printf ("Ingrese nombre usuario: \n");
+        fflush (stdin);
+        scanf ("%s",&a.nombreUsuario);
+
+
+        printf ("Ingrese contraseña: \n");
+        fflush (stdin);
+        scanf ("%s",&a.pass);
+
+        printf ("Ingrese año nacimiento: \n");
+        fflush (stdin);
+        scanf ("%d",&a.anioNacimiento);
+
+        printf ("Ingrese pais de nacimiento: \n");
+        fflush (stdin);
+        scanf ("%s",&a.pais);
+
+        a.idUsuario=id;
+        a.eliminado=0; //cero significa que usuario existe.
+
+        fwrite (&a,sizeof(usuario),1,archi);
+        fclose (archi);
+    }
+
+
+
+}
+void mostrarUsuario(usuario a)
+{
+
+    puts("\n---------------------------------------");
+    printf("\n                  Id: %d", a.idUsuario);
+    printf("\n              Nombre: %s", a.nombreUsuario);
+    printf("\n            Password: %s", a.pass);
+    printf("\n      Año Nacimiento: %d", a.anioNacimiento);
+    printf("\n                Pais: %s", a.pais);
+    printf("\n            Playlist: %d", a.playlist);
+    printf("\n            Cantidad: %d", a.cantidad);
+    printf("\n     Esta eliminado?: %d", a.eliminado);
+    puts("\n---------------------------------------");
+
+
+}
+void mostrarTodosUsuarios()
+{
+    FILE *archi;
+    usuario a;
+    archi=fopen(archivoUsuario, "rb");
+    int i=0;
+
+    if (archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(usuario),1,archi);
+            if(!feof(archi))
+            {
+                printf("\nRegistro numero %d",i++);
+                mostrarUsuario(a);
+            }
+        }
+        fclose(archi);
+    }
+}
+void mostrarUnUsuario(int id)
+{
+    FILE *archi;
+    usuario a;
+    archi=fopen(archivoUsuario, "rb");
+    int ide= id;
+    int i=0;
+
+    if (archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(usuario),1,archi);
+            if(!feof(archi))
+            {
+                if(a.idUsuario == ide)
+                {
+                    mostrarUsuario(a);
+                }
+
+            }
+        }
+        fclose(archi);
+    }
+}
+int ingresarComoUsuario()
+{
+    int flag;
+    int ok;
+    char nombre[20];
+    char contra[20];
+    do
+    {
+        printf("Ingrese su nombre de usuario:  \n");
+        fflush(stdin);
+        scanf("%s", &nombre);
+
+        printf("Ingrese su contraseña:  \n");
+        fflush(stdin);
+        scanf("%s", &contra);
+
+        flag =  confirmarExistencia(nombre,contra);
+        if (flag<0)
+        {
+            printf ("Nombre usuario inexistente\n");
+
+        }
+    }
+    while(flag <0);
+    return flag;
+
+    // si flag es igual a cero es un usuario existente, si es uno no existe.
+
+}
+
+int confirmarExistencia(char nombre[], char contra[])
+{
+    FILE *archi = fopen(archivoUsuario,"rb");
+    usuario a;
+    int rta;
+    if (archi!=NULL)
+    {
+        while (!feof(archi))
+        {
+            fread(&a, sizeof(usuario),1,archi);
+            if(!feof(archi))
+            {
+                if(strcmp(a.nombreUsuario,nombre) == 0 )
+                {
+                    rta = a.idUsuario;
+
+                }
+                else
+                {
+                    rta=-1;
+                }
+            }
+
+        }
+        fclose(archi);
+    }
+    printf ("rta es %d",rta);
+    return rta;
+
+}
+
+void loginExitoso(int id)
+{
+    int opcion =0;int h=id;
+    do
+    {
+        system ("cls");
+        printf ("MENU DE OPCIONES\n\n");
+        printf ("1. Ver perfil usuario\n\n");
+        printf ("2. Mostrar playlist\n\n");
+        printf ("3. Escuchar cancion\n\n");
+        printf ("4. Canciones recomendadas\n\n");
+        printf ("5. Salir\n\n");
+        scanf ("%d",&opcion);
+
+        switch (opcion)
+        {
+        case 1:
+            system ("cls");
+            mostrarUnUsuario(h);
+            getch();
+
+
+            break;
+
+        case 2:
+            system ("cls");
+            printf("opc2");
+            getch();
+            break;
+
+        case 3:
+            system ("cls");
+            printf("opc3");
+            getch();
+            break;
+
+        case 4:
+            system ("cls");
+            printf("opc4");
+            getch();
+            break;
+
+        case 5:
+            break;
+
+        default:
+            system ("cls");
+            printf ("Opcion no valida");
+            break;
+        }
+
+    }
+    while(opcion!=5);
+}
+
+
+int main()
+{
+    int opcion =0;
+    do
+    {
+        system ("cls");
+        printf ("Bienvenido a spUTNify \n\n");
+        printf ("1. Registrarse\n\n");
+        printf ("2. Ingresar\n\n");
+        printf ("3. Salir\n\n");
+        scanf("%d",&opcion);
+
+        switch(opcion)
+        {
+        case 1:
+            system ("cls");
+            cargaUsuario();
+            break;
+
+        case 2 :
+            system ("cls");
+            int identidadUsuario=ingresarComoUsuario();
+            loginExitoso(identidadUsuario);
+            break;
+
+        case 3 :
+            break;
+
+        default:
+            system ("cls");
+            printf ("\nOpcion no valida\n");
+            break;
+        }
+
+    }
+    while(opcion!=3);
+
+
+    //cargaUsuario();
+    mostrarTodosUsuarios();
+
+    return 0;
+}
