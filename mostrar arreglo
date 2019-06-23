@@ -1,0 +1,53 @@
+int posMenorStruct (Cancion a[], int pos, int cant)
+{
+    int i = pos+1;
+    int posMenor=pos;
+    int menorAnio = a[pos].anio;
+
+    while(i<cant)
+    {
+        if(menorAnio>a[i].anio)
+        {
+            menorAnio=a[i].anio;
+            posMenor=i;
+        }
+        i++;
+    }
+    return posMenor;
+}
+
+void ordenaArregloStructSeleccion(Cancion A[], int cant)
+{
+    int i=0;
+    int menor;
+    Cancion aux;
+
+    while(i<cant)
+    {
+        menor = posMenorStruct(A, i, cant);
+        aux=A[menor];
+        A[menor]=A[i];
+        A[i]=aux;
+        i++;
+    }
+}
+
+void muestraArregloStruct (Cancion a[], int cant)
+{
+    int i = 0;
+    while(i<cant)
+    {
+        puts("\n---------------------------------------");
+    printf("\n           Id: %d", a[i].idCancion);
+    printf("\n      Cancion: %s", a[i].titulo);
+    printf("\n      Artista: %s", a[i].artista);
+    printf("\n     Duracion: %.2f", a[i].duracion);
+    printf("\n        Album: %s", a[i].album);
+    printf("\n         Anio: %d", a[i].anio);
+    printf("\n       Genero: %s", a[i].genero);
+    printf("\n   Comentario: %s", a[i].comentario);
+    puts("\n---------------------------------------");
+
+        i++;
+    }
+}
